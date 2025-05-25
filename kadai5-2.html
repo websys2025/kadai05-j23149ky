@@ -4,17 +4,29 @@
     <title>演習課題5-2：外部APIの呼び出しテスト</title>
 </head>
 <body>
-    <h1 id="msg">何かのAPI</h1>
+    <h1 id="msg">天気予報のAPI</h1>
     <form name="apiform"><p>
-        何かのフォーム：<input type="text" name="form_data">
+        地域を選択：
+        <select id="form_data">
+        <option value="130000">東京</option>
+        <option value="120000">千葉</option>
+        <option value="150000">新潟</option>
+        </select>
         <button type="button" id="btn1" onclick="some_api(this.form)">実行</button>
     </p></form>
+
     
     <div id="result"></div>
     <script>
         async function some_api(myForm) {
             // ここにコードを書く
-            document.getElementById("result").innerHTML += myForm.form_data.value+"<br />";
+            document.getElementById("result").innerHTML = "";
+            const url = "https://www.jma.go.jp/bosai/forecast/data/overview_forecast/";
+            const responce = await fetch(url + myForm.form_data.value + ".json");
+            const data = await responce.json();
+            tenki = data['text'];
+
+            document.getElementById("result").innerHTML += tenki +"<br />";
             document.apiform.reset();
         }
     </script>
